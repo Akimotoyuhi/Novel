@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Linq;
 
-public class TextManager : MonoBehaviour
+public enum CharactorList
 {
-    #region Fields
+    Sasaki,
+    Sasaki2,
+    Sasaki3,
+}
+
+public class ScenarioManager : MonoBehaviour
+{
+    #region メンバ
     [SerializeField] TextDataBase m_database;
-    [SerializeField] TextDataBase m_text;
     /// <summary>表示間隔</summary>
     [SerializeField] float m_time;
     /// <summary>会話テキスト</summary>
@@ -17,11 +24,12 @@ public class TextManager : MonoBehaviour
     [SerializeField] Text m_nameText;
     /// <summary>背景</summary>
     [SerializeField] Image m_backGround;
+    /// <summary>フェードパネル</summary>
     [SerializeField] Image m_fadePanel;
     /// <summary>選択肢</summary>
     [SerializeField] GameObject[] m_buttons;
-    /// <summary>アニメーション</summary>
-    [SerializeField] Animator m_anim;
+    /// <summary>キャラクター達</summary>
+    [SerializeField] Image[] m_images;
     /// <summary>現在表示中のテキスト番号</summary>
     private int m_nowText = 0;
     /// <summary>現在のテキスト番号内のindex</summary>
@@ -39,7 +47,7 @@ public class TextManager : MonoBehaviour
     //static private string m_folderPath = "C:/Users/vantan/Desktop/unity games/EnsyuuKadaiNovel/Assets/Animation/Clip";
     //private string[] clips = System.IO.Directory.GetFiles(@m_folderPath, "*", System.IO.SearchOption.TopDirectoryOnly);
     #endregion
-    public static TextManager Instance { get; private set; }
+    public static ScenarioManager Instance { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -50,6 +58,9 @@ public class TextManager : MonoBehaviour
         DisableButton(m_buttons.Length);
         m_nameText.text = "System";
         m_viewText.text = "[[[PleaseSpaceKey]]]";
+        Vector2 v = Vector2.one;
+        Debug.Log(v.ToString());
+        string s = v.ToString();
     }
 
     void Update()
@@ -103,6 +114,7 @@ public class TextManager : MonoBehaviour
             }
             else
             {
+                //DOTween.KillAll(true);
                 m_isSpeak = false;
             }
         }
@@ -110,21 +122,38 @@ public class TextManager : MonoBehaviour
 
     private Tween SelectTween(DataBase database, int index)
     {
+        List<string> list = new List<string>();
         switch (database.ScenarioSettings(index).ScenarioSelectType)
         {
             case ScenarioSelectType.Text:
-                string[] data = (string[])m_database.Data[m_nowText].ScenarioSettings(index).Execute();
-                m_nameText.text = data[0];
-                return m_viewText.DOText(data[1], float.Parse(data[2]));
-                //StartCoroutine(TextAsync(data[1], 30));
-                //break;
+                list = ToStringList(database.ScenarioSettings(index).Execute());
+                m_nameText.text = list[0];
+                return m_viewText.DOText(list[1], float.Parse(list[2]));
             case ScenarioSelectType.Fade:
-                int[] num = (int[])m_database.Data[m_nowText].ScenarioSettings(index).Execute();
-                return m_fadePanel.DOFade(num[0], num[1]);
-            //break;
+                list = ToStringList(database.ScenarioSettings(index).Execute());
+                return m_fadePanel.DOFade(int.Parse(list[0]), float.Parse(list[1]));
+            case ScenarioSelectType.CharaJoin:
+                list = ToStringList(database.ScenarioSettings(index).Execute());
+                Image image = m_images[int.Parse(list[0])];
+                return image.DOFade(int.Parse(list[1]), float.Parse(list[2]));
+            case ScenarioSelectType.CharaMove:
+                //list = ToStringList(database.ScenarioSettings(index).Execute());
+                return null;
+                break;
             default:
                 return null;
         }
+    }
+
+    public List<string> ToStringList(object obj)
+    {
+        List<string> list = new List<string>();
+        string[] vs = (string[])obj;
+        foreach (string s in vs)
+        {
+            list.Add(s);
+        }
+        return list;
     }
 
     /// <summary>

@@ -13,56 +13,142 @@ MonoBehaviour:
   m_Name: Text Data Base
   m_EditorClassIdentifier: 
   m_data:
-  - m_label: "\u30D5\u30A7\u30FC\u30C9\u3059\u308B"
+  - m_label: "\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u30BB\u30C3\u30C8\u30A2\u30C3\u30D7"
     m_isAppend: 0
     m_scenarioSettings:
     - id: 0
+    - id: 1
+    - id: 2
+  - m_label: "\u30D5\u30A7\u30FC\u30C9\u3059\u308B"
+    m_isAppend: 0
+    m_scenarioSettings:
+    - id: 3
   - m_label: "\u558B\u308B"
     m_isAppend: 0
     m_scenarioSettings:
-    - id: 1
+    - id: 4
   - m_label: "\u558B\u308A\u3064\u3064\u30D5\u30A7\u30FC\u30C9"
     m_isAppend: 0
     m_scenarioSettings:
-    - id: 2
-    - id: 3
+    - id: 5
+    - id: 6
   - m_label: "\u30D5\u30A7\u30FC\u30C9\u3057\u3066\u304B\u3089\u558B\u308B"
     m_isAppend: 1
     m_scenarioSettings:
-    - id: 4
-    - id: 5
+    - id: 7
+    - id: 8
+  - m_label: "\u4F50\u3005\u6728\u30D5\u30A7\u30FC\u30C9"
+    m_isAppend: 0
+    m_scenarioSettings:
+    - id: 9
+    - id: 10
+  - m_label: "\u4F50\u3005\u6728\u30D5\u30A7\u30B9\u30C6\u30A3\u30D0\u30EB"
+    m_isAppend: 1
+    m_scenarioSettings:
+    - id: 11
+    - id: 12
+    - id: 13
+    - id: 14
+    - id: 15
+    - id: 16
   references:
     version: 1
     00000000:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_fadeType: 0
+        m_duration: 0
+    00000001:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 1
+        m_fadeType: 1
+        m_duration: 0
+    00000002:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 2
+        m_fadeType: 1
+        m_duration: 0
+    00000003:
       type: {class: SetFade, ns: , asm: Assembly-CSharp}
       data:
-        m_type: 1
+        m_fadeType: 1
         m_duration: 1
-    00000001:
+    00000004:
       type: {class: SetText, ns: , asm: Assembly-CSharp}
       data:
         m_name: Sasaki
         m_text: "\u558B\u308B\u3088\uFF5E\uFF5E\uFF5E\uFF5E"
-        m_duration: 1
-    00000002:
+        m_duration: 0.5
+    00000005:
       type: {class: SetText, ns: , asm: Assembly-CSharp}
       data:
         m_name: Sasaki
         m_text: "\u558B\u308A\u306A\u304C\u3089\u30D5\u30A7\u30FC\u30C9\u3059\u308B\u3088"
-        m_duration: 1
-    00000003:
+        m_duration: 0.5
+    00000006:
       type: {class: SetFade, ns: , asm: Assembly-CSharp}
       data:
-        m_type: 0
+        m_fadeType: 0
         m_duration: 1
-    00000004:
+    00000007:
       type: {class: SetFade, ns: , asm: Assembly-CSharp}
       data:
-        m_type: 1
+        m_fadeType: 1
         m_duration: 1
-    00000005:
+    00000008:
       type: {class: SetText, ns: , asm: Assembly-CSharp}
       data:
-        m_name: 
+        m_name: Sasaki
         m_text: "\u30D5\u30A7\u30FC\u30C9\u3057\u3066\u304B\u3089\u558B\u308B\u3088"
+        m_duration: 0.5
+    00000009:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_fadeType: 1
         m_duration: 1
+    0000000A:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_name: Sasaki
+        m_text: "\u3058\u3083\u3042\u306D\uFF5E\uFF5E\uFF5E\uFF5E\uFF5E\uFF5E"
+        m_duration: 1
+    0000000B:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_fadeType: 0
+        m_duration: 0.5
+    0000000C:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_fadeType: 1
+        m_duration: 0.5
+    0000000D:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 1
+        m_fadeType: 0
+        m_duration: 0.5
+    0000000E:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 1
+        m_fadeType: 1
+        m_duration: 0.5
+    0000000F:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 2
+        m_fadeType: 0
+        m_duration: 0.5
+    00000010:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 2
+        m_fadeType: 1
+        m_duration: 0.5

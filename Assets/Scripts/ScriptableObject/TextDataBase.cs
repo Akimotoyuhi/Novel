@@ -18,11 +18,10 @@ public class TextDataBase : ScriptableObject
     }
 }
 
-public enum AnimState
+public enum FadeType
 {
-    none,
-    SasakiHop,
-    SasakiSlide
+    Fadein,
+    Fadeout
 }
 
 [Serializable]
@@ -45,7 +44,7 @@ public enum ScenarioSelectType
     Text,
     Fade,
     CharaJoin,
-    CharaPosition,
+    CharaMove,
 }
 
 public interface IScenarioSetting
@@ -58,7 +57,7 @@ public interface IScenarioSetting
     /// î•ñ‚Ìó‚¯“n‚µ
     /// </summary>
     /// <returns></returns>
-    object Execute();
+    string[] Execute();
 }
 public class SetText : IScenarioSetting
 {
@@ -70,43 +69,59 @@ public class SetText : IScenarioSetting
     float m_duration;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Text;
-    public object Execute()
+    public string[] Execute()
     {
         return new string[] { m_name, m_text, m_duration.ToString() };
     }
 }
 public class SetFade : IScenarioSetting
 {
-    enum FadeType { Fadein, Fadeout }
-    [SerializeField] FadeType m_type;
-    [SerializeField] int m_duration;
+
+    [SerializeField] FadeType m_fadeType;
+    [SerializeField] float m_duration;
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Fade;
-    public object Execute()
+    public string[] Execute()
     {
-        int[] ret = new int[2];
-        if (m_type == FadeType.Fadein) ret[0] = 1;
-        else ret[0] = 0;
-        ret[1] = m_duration;
+        string[] ret = new string[2];
+        if (m_fadeType == FadeType.Fadein) ret[0] = "1";
+        else ret[0] = "0";
+        ret[1] = m_duration.ToString();
         return ret;
     }
 }
-public class SetCharaJoin : IScenarioSetting
+public class SetCharaFade : IScenarioSetting
 {
-    [SerializeField] Image m_image;
+    [SerializeField] CharactorList m_fadeChara;
+    [SerializeField] FadeType m_fadeType;
+    [SerializeField] float m_duration;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.CharaJoin;
-    public object Execute()
+    public string[] Execute()
     {
-        return m_image;
+        string[] ret = new string[3];
+        int i = (int)m_fadeChara;
+        ret[0] = i.ToString();
+        if (m_fadeType == FadeType.Fadein) ret[1] = "1";
+        else ret[1] = "0";
+        ret[2] = m_duration.ToString();
+        return ret;
     }
 }
-public class SetCharaPosition : IScenarioSetting
+public class SetCharaMove : IScenarioSetting
 {
-    [SerializeField] Vector2 m_position;
+    [SerializeField] CharactorList m_fadeChara;
+    [SerializeField] Vector2 m_endPosition;
+    [SerializeField] float m_duration;
 
-    public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.CharaPosition;
-    public object Execute()
+    public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.CharaMove;
+    public string[] Execute()
     {
-        return m_position;
+        string[] ret = new string[4];
+        int i = (int)m_fadeChara;
+        ret[0] = i.ToString();
+        ret[1] = m_endPosition.x.ToString();
+        ret[2] = m_endPosition.y.ToString();
+        ret[3] = m_duration.ToString();
+        return ret;
     }
 }
