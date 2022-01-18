@@ -51,6 +51,17 @@ MonoBehaviour:
     - id: 14
     - id: 15
     - id: 16
+  - m_label: "\u30D5\u30A7\u30FC\u30C9"
+    m_isAppend: 1
+    m_scenarioSettings:
+    - id: 17
+    - id: 18
+  - m_label: "\u79FB\u52D5"
+    m_isAppend: 1
+    m_scenarioSettings:
+    - id: 19
+    - id: 20
+    - id: 21
   references:
     version: 1
     00000000:
@@ -152,3 +163,33 @@ MonoBehaviour:
         m_fadeChara: 2
         m_fadeType: 1
         m_duration: 0.5
+    00000011:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_fadeType: 0
+        m_duration: 1
+    00000012:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_name: Sasaki
+        m_text: "\u305F\u3060\u3044\u307E"
+        m_duration: 0.1
+    00000013:
+      type: {class: SetCharaMove, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_endPosition: {x: -600, y: 60}
+        m_duration: 0.3
+    00000014:
+      type: {class: SetCharaMove, ns: , asm: Assembly-CSharp}
+      data:
+        m_fadeChara: 0
+        m_endPosition: {x: 600, y: 60}
+        m_duration: 0.3
+    00000015:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_name: Sasaki
+        m_text: "\u79FB\u52D5\u3082\u51FA\u6765\u3061\u3083\u3046"
+        m_duration: 0.1

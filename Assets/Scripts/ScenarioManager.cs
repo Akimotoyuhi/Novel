@@ -58,9 +58,6 @@ public class ScenarioManager : MonoBehaviour
         DisableButton(m_buttons.Length);
         m_nameText.text = "System";
         m_viewText.text = "[[[PleaseSpaceKey]]]";
-        Vector2 v = Vector2.one;
-        Debug.Log(v.ToString());
-        string s = v.ToString();
     }
 
     void Update()
@@ -123,6 +120,7 @@ public class ScenarioManager : MonoBehaviour
     private Tween SelectTween(DataBase database, int index)
     {
         List<string> list = new List<string>();
+        Image image;
         switch (database.ScenarioSettings(index).ScenarioSelectType)
         {
             case ScenarioSelectType.Text:
@@ -134,13 +132,15 @@ public class ScenarioManager : MonoBehaviour
                 return m_fadePanel.DOFade(int.Parse(list[0]), float.Parse(list[1]));
             case ScenarioSelectType.CharaJoin:
                 list = ToStringList(database.ScenarioSettings(index).Execute());
-                Image image = m_images[int.Parse(list[0])];
+                image = m_images[int.Parse(list[0])];
                 return image.DOFade(int.Parse(list[1]), float.Parse(list[2]));
             case ScenarioSelectType.CharaMove:
-                //list = ToStringList(database.ScenarioSettings(index).Execute());
-                return null;
-                break;
+                list = ToStringList(database.ScenarioSettings(index).Execute());
+                RectTransform rect = m_images[int.Parse(list[0])].GetComponent<RectTransform>();
+                return rect.DOAnchorPos(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
+                //return rect.DOMove(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
             default:
+                Debug.LogError("予期しないパラメーター");
                 return null;
         }
     }
