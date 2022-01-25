@@ -17,21 +17,30 @@ public class TextDataBase : ScriptableObject
         //dic.Add(m_data.);
     }
 }
-
 public enum FadeType
 {
     Fadein,
     Fadeout
 }
-
+public enum SequenceType
+{
+    Append,
+    Join,
+}
+public enum ScenarioSelectType
+{
+    Text,
+    Fade,
+    CharaJoin,
+    CharaMove,
+    Interval,
+}
 [Serializable]
 public class DataBase
 {
     public string m_label;
-    [SerializeField] bool m_isAppend = false;
     [SerializeReference, SubclassSelector]
     private List<IScenarioSetting> m_scenarioSettings;
-    public bool IsAppend => m_isAppend;
     public int ScenarioLength => m_scenarioSettings.Count;
     public IScenarioSetting ScenarioSettings(int index)
     {
@@ -39,44 +48,37 @@ public class DataBase
     }
 }
 
-public enum ScenarioSelectType
-{
-    Text,
-    Fade,
-    CharaJoin,
-    CharaMove,
-}
-
 public interface IScenarioSetting
 {
     /// <summary>
     /// 条件分岐用
     /// </summary>
-    public ScenarioSelectType ScenarioSelectType { get; }
+    ScenarioSelectType ScenarioSelectType { get; }
     /// <summary>
     /// 情報の受け渡し
     /// </summary>
     /// <returns></returns>
     string[] Execute();
+    SequenceType SequenceType { get; }
 }
 public class SetText : IScenarioSetting
 {
-    [SerializeField]
-    string m_name;
+    [SerializeField] SequenceType m_sequenceType = default;
+    [SerializeField] string m_name;
     [SerializeField, TextArea(0, 3)]
-    string m_text;
-    [SerializeField]
-    float m_duration;
+    　　　　　　　　 string m_text;
+    [SerializeField] float m_duration;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Text;
     public string[] Execute()
     {
         return new string[] { m_name, m_text, m_duration.ToString() };
     }
+    public SequenceType SequenceType => m_sequenceType;
 }
 public class SetFade : IScenarioSetting
 {
-
+    [SerializeField] SequenceType m_sequenceType = default;
     [SerializeField] FadeType m_fadeType;
     [SerializeField] float m_duration;
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Fade;
@@ -88,9 +90,11 @@ public class SetFade : IScenarioSetting
         ret[1] = m_duration.ToString();
         return ret;
     }
+    public SequenceType SequenceType => m_sequenceType;
 }
 public class SetCharaFade : IScenarioSetting
 {
+    [SerializeField] SequenceType m_sequenceType = default;
     [SerializeField] CharactorList m_fadeChara;
     [SerializeField] FadeType m_fadeType;
     [SerializeField] float m_duration;
@@ -106,9 +110,11 @@ public class SetCharaFade : IScenarioSetting
         ret[2] = m_duration.ToString();
         return ret;
     }
+    public SequenceType SequenceType => m_sequenceType;
 }
 public class SetCharaMove : IScenarioSetting
 {
+    [SerializeField] SequenceType m_sequenceType = default;
     [SerializeField] CharactorList m_fadeChara;
     [SerializeField] Vector2 m_endPosition;
     [SerializeField] float m_duration;
@@ -124,4 +130,16 @@ public class SetCharaMove : IScenarioSetting
         ret[3] = m_duration.ToString();
         return ret;
     }
+    public SequenceType SequenceType => m_sequenceType;
+}
+
+public class Interval : IScenarioSetting
+{
+    [SerializeField] float m_intervalTime = 0;
+    public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Interval;
+    public string[] Execute()
+    {
+        return new string[1] { m_intervalTime.ToString() };
+    }
+    public SequenceType SequenceType => SequenceType.Append;
 }

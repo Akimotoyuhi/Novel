@@ -44,6 +44,7 @@ public class ScenarioManager : MonoBehaviour
     private bool m_isSelect = false;
     /// <summary>選ばれた番号保存用</summary>
     private int m_selectNum = 0;
+    private Sequence m_sequence = default;
     //static private string m_folderPath = "C:/Users/vantan/Desktop/unity games/EnsyuuKadaiNovel/Assets/Animation/Clip";
     //private string[] clips = System.IO.Directory.GetFiles(@m_folderPath, "*", System.IO.SearchOption.TopDirectoryOnly);
     #endregion
@@ -52,7 +53,7 @@ public class ScenarioManager : MonoBehaviour
     {
         Instance = this;
     }
-    
+
     void Start()
     {
         DisableButton(m_buttons.Length);
@@ -67,24 +68,20 @@ public class ScenarioManager : MonoBehaviour
         {
             if (!m_isSpeak)
             {
+                m_isSpeak = true;
                 m_viewText.text = ""; //テキストリセット
 
                 if (!m_isSelect)
                 {
                     if (m_nowText < m_database.Data.Count)
                     {
-                        var sequence = DOTween.Sequence();
+                        m_sequence = DOTween.Sequence();
+                        //データを読み込む
                         for (int i = 0; i < m_database.Data[m_nowText].ScenarioLength; i++)
                         {
-                            if (m_database.Data[m_nowText].IsAppend)
-                            {
-                                sequence.Append(SelectTween(m_database.Data[m_nowText], i));
-                            }
-                            else
-                            {
-                                sequence.Join(SelectTween(m_database.Data[m_nowText], i));
-                            }
+                            SequenceSelect(m_database.Data[m_nowText], i, m_sequence);
                         }
+                        m_sequence.OnComplete(() => m_isSpeak = false);
                         m_nowText++;
                     }
                     else
@@ -111,12 +108,17 @@ public class ScenarioManager : MonoBehaviour
             }
             else
             {
-                //DOTween.KillAll(true);
-                //m_isSpeak = false;
+                m_sequence.Kill(true);
             }
         }
     }
 
+    /// <summary>
+    /// 非同期で行う処理達
+    /// </summary>
+    /// <param name="database"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
     private Tween SelectTween(DataBase database, int index)
     {
         List<string> list = default;
@@ -138,6 +140,31 @@ public class ScenarioManager : MonoBehaviour
                 list = ToStringList(database.ScenarioSettings(index).Execute());
                 RectTransform rect = m_images[int.Parse(list[0])].GetComponent<RectTransform>();
                 return rect.DOAnchorPos(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
+            default:
+                Debug.LogError("予期しないパラメーター");
+                return null;
+        }
+    }
+
+    /// <summary>
+    /// AppendやJoinの制御
+    /// </summary>
+    /// <param name="database"></param>
+    /// <param name="index"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    private Sequence SequenceSelect(DataBase database, int index, Sequence s)
+    {
+        if (database.ScenarioSettings(index).ScenarioSelectType == ScenarioSelectType.Interval)
+        {
+            return s.AppendInterval(float.Parse(database.ScenarioSettings(index).Execute()[0]));
+        }
+        switch (database.ScenarioSettings(index).SequenceType)
+        {
+            case SequenceType.Append:
+                return s.Append(SelectTween(database, index));
+            case SequenceType.Join:
+                return s.Join(SelectTween(database, index));
             default:
                 Debug.LogError("予期しないパラメーター");
                 return null;
