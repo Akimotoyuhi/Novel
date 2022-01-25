@@ -62,7 +62,7 @@ public class ScenarioManager : MonoBehaviour
 
     void Update()
     {
-        if (m_stop) return;
+        //if (m_stop) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!m_isSpeak)
@@ -112,14 +112,14 @@ public class ScenarioManager : MonoBehaviour
             else
             {
                 //DOTween.KillAll(true);
-                m_isSpeak = false;
+                //m_isSpeak = false;
             }
         }
     }
 
     private Tween SelectTween(DataBase database, int index)
     {
-        List<string> list = new List<string>();
+        List<string> list = default;
         Image image;
         switch (database.ScenarioSettings(index).ScenarioSelectType)
         {
@@ -138,7 +138,6 @@ public class ScenarioManager : MonoBehaviour
                 list = ToStringList(database.ScenarioSettings(index).Execute());
                 RectTransform rect = m_images[int.Parse(list[0])].GetComponent<RectTransform>();
                 return rect.DOAnchorPos(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
-                //return rect.DOMove(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
             default:
                 Debug.LogError("予期しないパラメーター");
                 return null;
