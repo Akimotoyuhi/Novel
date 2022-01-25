@@ -70,7 +70,6 @@ public class ScenarioManager : MonoBehaviour
             {
                 m_isSpeak = true;
                 m_viewText.text = ""; //テキストリセット
-
                 if (!m_isSelect)
                 {
                     if (m_nowText < m_database.Data.Count)
@@ -109,6 +108,7 @@ public class ScenarioManager : MonoBehaviour
             else
             {
                 m_sequence.Kill(true);
+                m_isSpeak = false;
             }
         }
     }
@@ -121,23 +121,19 @@ public class ScenarioManager : MonoBehaviour
     /// <returns></returns>
     private Tween SelectTween(DataBase database, int index)
     {
-        List<string> list = default;
+        List<string> list = ToStringList(database.ScenarioSettings(index).Execute());
         Image image;
         switch (database.ScenarioSettings(index).ScenarioSelectType)
         {
             case ScenarioSelectType.Text:
-                list = ToStringList(database.ScenarioSettings(index).Execute());
                 m_nameText.text = list[0];
                 return m_viewText.DOText(list[1], float.Parse(list[2]));
             case ScenarioSelectType.Fade:
-                list = ToStringList(database.ScenarioSettings(index).Execute());
                 return m_fadePanel.DOFade(int.Parse(list[0]), float.Parse(list[1]));
             case ScenarioSelectType.CharaJoin:
-                list = ToStringList(database.ScenarioSettings(index).Execute());
                 image = m_images[int.Parse(list[0])];
                 return image.DOFade(int.Parse(list[1]), float.Parse(list[2]));
             case ScenarioSelectType.CharaMove:
-                list = ToStringList(database.ScenarioSettings(index).Execute());
                 RectTransform rect = m_images[int.Parse(list[0])].GetComponent<RectTransform>();
                 return rect.DOAnchorPos(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
             default:

@@ -58,6 +58,14 @@ MonoBehaviour:
     - id: 22
     - id: 23
     - id: 24
+  - m_label: "\u540C\u6642\u3068\u9806\u756A\u306E\u8907\u5408"
+    m_scenarioSettings:
+    - id: 25
+    - id: 26
+    - id: 27
+    - id: 28
+    - id: 29
+    - id: 30
   references:
     version: 1
     00000000:
@@ -161,21 +169,21 @@ MonoBehaviour:
         m_sequenceType: 0
         m_fadeChara: 1
         m_fadeType: 1
-        m_duration: 0.5
+        m_duration: 0.2
     0000000F:
       type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
       data:
         m_sequenceType: 0
         m_fadeChara: 2
         m_fadeType: 0
-        m_duration: 0.5
+        m_duration: 0.2
     00000010:
       type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
       data:
         m_sequenceType: 0
         m_fadeChara: 2
         m_fadeType: 1
-        m_duration: 0.5
+        m_duration: 0.2
     00000011:
       type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
       data:
@@ -193,7 +201,7 @@ MonoBehaviour:
     00000013:
       type: {class: SetText, ns: , asm: Assembly-CSharp}
       data:
-        m_sequenceType: 2
+        m_sequenceType: 0
         m_name: Sasaki
         m_text: "\u79FB\u52D5\u3082\u51FA\u6765\u3061\u3083\u3046"
         m_duration: 0.1
@@ -216,7 +224,7 @@ MonoBehaviour:
       data:
         m_sequenceType: 0
         m_name: Sasaki
-        m_text: "\u4ECA\u304B\u3089\u4E09\u79D2\u5F85\u3061\u307E\u3059"
+        m_text: "\u4E09\u79D2\u5F85\u3063\u3066\u304B\u3089\u558B\u308A\u307E\u3059"
         m_duration: 0.3
     00000017:
       type: {class: Interval, ns: , asm: Assembly-CSharp}
@@ -227,5 +235,47 @@ MonoBehaviour:
       data:
         m_sequenceType: 0
         m_name: Sasaki
-        m_text: "\u4E09\u79D2\u5F85\u3063\u305F"
+        m_text: "\u4E09\u79D2\u305F\u3063\u305F"
         m_duration: 0.3
+    00000019:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 1
+        m_name: Sasaki
+        m_text: "\u52D5\u304D\u306A\u304C\u3089\u558B\u3063\u3066"
+        m_duration: 0.3
+    0000001A:
+      type: {class: SetCharaMove, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 1
+        m_fadeChara: 0
+        m_endPosition: {x: -300, y: 60}
+        m_duration: 1
+    0000001B:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 0
+        m_name: Sasaki
+        m_text: "\u6D88\u3048\u3066"
+        m_duration: 0.3
+    0000001C:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 1
+        m_fadeChara: 0
+        m_fadeType: 1
+        m_duration: 1
+    0000001D:
+      type: {class: SetText, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 0
+        m_name: Sasaki
+        m_text: "\u7D42\u308F\u3063\u305F\u3089\u3082\u3063\u304B\u3044\u51FA\u3066\u304F\u308B\u3088"
+        m_duration: 0.3
+    0000001E:
+      type: {class: SetCharaFade, ns: , asm: Assembly-CSharp}
+      data:
+        m_sequenceType: 1
+        m_fadeChara: 0
+        m_fadeType: 0
+        m_duration: 1
