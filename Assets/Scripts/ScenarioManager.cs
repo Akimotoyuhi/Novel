@@ -11,6 +11,10 @@ public enum CharactorList
     Sasaki2,
     Sasaki3,
 }
+public enum BackGroundList
+{
+    Space,
+}
 
 public class ScenarioManager : MonoBehaviour
 {
@@ -24,6 +28,8 @@ public class ScenarioManager : MonoBehaviour
     [SerializeField] Text m_nameText;
     /// <summary>背景</summary>
     [SerializeField] Image m_backGround;
+    /// <summary>フェード用背景</summary>
+    [SerializeField] Image m_fadeBackGround;
     /// <summary>フェードパネル</summary>
     [SerializeField] Image m_fadePanel;
     /// <summary>選択肢</summary>
@@ -31,7 +37,7 @@ public class ScenarioManager : MonoBehaviour
     /// <summary>キャラクター達</summary>
     [SerializeField] Image[] m_images;
     /// <summary>現在表示中のテキスト番号</summary>
-    private int m_nowText = 0;
+    private int m_nowData = 0;
     /// <summary>現在のテキスト番号内のindex</summary>
     //private int m_nowIndex = 0;
     /// <summary>現在表示中のテキスト番号(選択肢中)</summary>
@@ -72,16 +78,16 @@ public class ScenarioManager : MonoBehaviour
                 m_viewText.text = ""; //テキストリセット
                 if (!m_isSelect)
                 {
-                    if (m_nowText < m_database.Data.Count)
+                    if (m_nowData < m_database.Data.Count)
                     {
                         m_sequence = DOTween.Sequence();
                         //データを読み込む
-                        for (int i = 0; i < m_database.Data[m_nowText].ScenarioLength; i++)
+                        for (int i = 0; i < m_database.Data[m_nowData].ScenarioLength; i++)
                         {
-                            SequenceSelect(m_database.Data[m_nowText], i, m_sequence);
+                            SequenceSelect(m_database.Data[m_nowData], i, m_sequence);
                         }
                         m_sequence.OnComplete(() => m_isSpeak = false);
-                        m_nowText++;
+                        m_nowData++;
                     }
                     else
                     {
@@ -123,6 +129,7 @@ public class ScenarioManager : MonoBehaviour
     {
         List<string> list = ToStringList(database.ScenarioSettings(index).Execute());
         Image image;
+        Tween ret = null;
         switch (database.ScenarioSettings(index).ScenarioSelectType)
         {
             case ScenarioSelectType.Text:
@@ -136,10 +143,17 @@ public class ScenarioManager : MonoBehaviour
             case ScenarioSelectType.CharaMove:
                 RectTransform rect = m_images[int.Parse(list[0])].GetComponent<RectTransform>();
                 return rect.DOAnchorPos(new Vector2(float.Parse(list[1]), float.Parse(list[2])), float.Parse(list[3]));
+            case ScenarioSelectType.ChangeBackGround:
+                return null;
             default:
                 Debug.LogError("予期しないパラメーター");
-                return null;
+                break;
         }
+        //foreach (var item in database.ScenarioSettings(index).HighlightImages)
+        //{
+
+        //}
+        return ret;
     }
 
     /// <summary>

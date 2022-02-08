@@ -1926,6 +1926,7 @@ MonoBehaviour:
   m_viewText: {fileID: 329103877}
   m_nameText: {fileID: 1086393013}
   m_backGround: {fileID: 1571411817}
+  m_fadeBackGround: {fileID: 0}
   m_fadePanel: {fileID: 696993680}
   m_buttons:
   - {fileID: 873066704}

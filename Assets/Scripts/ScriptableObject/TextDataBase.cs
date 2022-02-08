@@ -9,13 +9,6 @@ public class TextDataBase : ScriptableObject
 {
     [SerializeField] List<DataBase> m_data = new List<DataBase>();
     public List<DataBase> Data => m_data;
-    //private Dictionary<string, Sprite> dic = new Dictionary<string, Sprite>();
-    //public Dictionary<string, Sprite> GetKeyValuePairs => dic;
-    public void Setup()
-    {
-        Debug.LogWarning("Setupになんもないす");
-        //dic.Add(m_data.);
-    }
 }
 public enum FadeType
 {
@@ -34,13 +27,20 @@ public enum ScenarioSelectType
     CharaJoin,
     CharaMove,
     Interval,
+    ChangeBackGround,
+}
+public enum HighlightImage
+{
+    Right,
+    Center,
+    Left,
 }
 [Serializable]
 public class DataBase
 {
     public string m_label;
     [SerializeReference, SubclassSelector]
-    private List<IScenarioSetting> m_scenarioSettings;
+    List<IScenarioSetting> m_scenarioSettings;
     public int ScenarioLength => m_scenarioSettings.Count;
     public IScenarioSetting ScenarioSettings(int index)
     {
@@ -55,19 +55,21 @@ public interface IScenarioSetting
     /// </summary>
     ScenarioSelectType ScenarioSelectType { get; }
     /// <summary>
-    /// 情報の受け渡し
+    /// 情報渡し用
     /// </summary>
     /// <returns></returns>
     string[] Execute();
     SequenceType SequenceType { get; }
+    public List<HighlightImage> HighlightImages { get; }
 }
 public class SetText : IScenarioSetting
 {
-    [SerializeField] SequenceType m_sequenceType = default;
+    [SerializeField] SequenceType m_sequenceType;
     [SerializeField] string m_name;
     [SerializeField, TextArea(0, 3)]
     　　　　　　　　 string m_text;
     [SerializeField] float m_duration;
+    [SerializeField] List<HighlightImage> m_highlightImages;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Text;
     public string[] Execute()
@@ -75,12 +77,14 @@ public class SetText : IScenarioSetting
         return new string[] { m_name, m_text, m_duration.ToString() };
     }
     public SequenceType SequenceType => m_sequenceType;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
 }
 public class SetFade : IScenarioSetting
 {
-    [SerializeField] SequenceType m_sequenceType = default;
+    [SerializeField] SequenceType m_sequenceType;
     [SerializeField] FadeType m_fadeType;
     [SerializeField] float m_duration;
+    [SerializeField] List<HighlightImage> m_highlightImages;
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Fade;
     public string[] Execute()
     {
@@ -91,13 +95,15 @@ public class SetFade : IScenarioSetting
         return ret;
     }
     public SequenceType SequenceType => m_sequenceType;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
 }
 public class SetCharaFade : IScenarioSetting
 {
-    [SerializeField] SequenceType m_sequenceType = default;
+    [SerializeField] SequenceType m_sequenceType;
     [SerializeField] CharactorList m_fadeChara;
     [SerializeField] FadeType m_fadeType;
     [SerializeField] float m_duration;
+    [SerializeField] List<HighlightImage> m_highlightImages;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.CharaJoin;
     public string[] Execute()
@@ -111,13 +117,15 @@ public class SetCharaFade : IScenarioSetting
         return ret;
     }
     public SequenceType SequenceType => m_sequenceType;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
 }
 public class SetCharaMove : IScenarioSetting
 {
-    [SerializeField] SequenceType m_sequenceType = default;
+    [SerializeField] SequenceType m_sequenceType;
     [SerializeField] CharactorList m_fadeChara;
     [SerializeField] Vector2 m_endPosition;
     [SerializeField] float m_duration;
+    [SerializeField] List<HighlightImage> m_highlightImages;
 
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.CharaMove;
     public string[] Execute()
@@ -131,15 +139,32 @@ public class SetCharaMove : IScenarioSetting
         return ret;
     }
     public SequenceType SequenceType => m_sequenceType;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
 }
 
 public class Interval : IScenarioSetting
 {
     [SerializeField] float m_intervalTime = 0;
+    [SerializeField] List<HighlightImage> m_highlightImages;
     public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.Interval;
     public string[] Execute()
     {
         return new string[1] { m_intervalTime.ToString() };
     }
     public SequenceType SequenceType => SequenceType.Append;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
+}
+public class ChangeBackGround : IScenarioSetting
+{
+    [SerializeField] Sprite m_backGroundSprite;
+    [SerializeField] float m_fadeInterval;
+    [SerializeField] SequenceType m_sequenceType;
+    [SerializeField] List<HighlightImage> m_highlightImages;
+    public ScenarioSelectType ScenarioSelectType => ScenarioSelectType.ChangeBackGround;
+    public string[] Execute()
+    {
+        return new string[] { "" };
+    }
+    public SequenceType SequenceType => m_sequenceType;
+    public List<HighlightImage> HighlightImages => m_highlightImages;
 }

@@ -12,6 +12,7 @@ public class Domove : MonoBehaviour
         rect = GetComponent<RectTransform>();
         Sequence s = DOTween.Sequence();
         s.Append(rect.DOAnchorPos(new Vector2(500, 0), 1))
+            .AppendInterval(0.5f)
             .Append(rect.DOAnchorPos(new Vector2(-500, 0), 1));
     }
 
